@@ -8,14 +8,14 @@ So developer could config a component with Javascript rather than to write a ful
 
 This project incldues two projects:
 
-* [Core project] (https://github.com/jamie-mttk/vueWrapper) which implements the full functionalities
-* [Demo project] (https://github.com/jamie-mttk/vueWrapperDemo) which is a demo to show how to use vuewrapper
+* [Core project] (https://github.com/jamie-mttk/mttk-vue-wrap) which implements the full functionalities
+* [Demo project] (https://github.com/jamie-mttk/vueWrapperDemo) which is a demo to show how to use vuewrapper [Not available yet]
 
-We recommend to preview the project first and then read the [Developer Manual](https://github.com/jamie-mttk/vueWrapper/blob/master/MANUAL.md)
+We recommend to preview the project first and then read the [Developer Manual](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL.md)
 
 ## Project preview
 
-A live preview of the demo project is available [here](https://mttk.netlify.app/)
+A live preview of the demo project is available [here](https://mttk.netlify.app/) [Not available yet]
 
 
 ## Demo project Setup
@@ -37,40 +37,16 @@ export const valueInput = ref("InitValue");
 
 //A simple input configuration
 export const configInput ={
-  sys: {
-    //
-    component: "ElInput",
-    modelValue: valueInput,
-  },
-  props: {
+    '~component': "ElInput",
+    '~modelValue': valueInput,
     placeholder: "Please input value",
-    clearable: true,
-  },
-  slots: {},
-  events: {},
-}
+    clearable: true}
 ```
 
-Since version 0.3.0, flat format config is supported,so the config could look like below
+Then use MttkWrapComp to render
 
 ```sh
-export const valueInput = ref("InitValue");
-
-//A simple input configuration
-export const configInput ={
-  //sys
-    "~component": "ElInput",
-    "~modelValue": valueInput,
-  //props
-    placeholder: "Please input value",
-    clearable: true  
-}
-```
-
-Then use CompWrap to render
-
-```sh
-<CompWrap :config="configInput"></CompWrap>
+<MttkWrapComp :config="configInput"></MttkWrapComp>
 ```
 
 ## Benifit
@@ -80,7 +56,7 @@ The idea of this project is to use pure script(javascript/typescript) to warppin
 
 And in the real project we may not care about all the features of the component, so configuration could be simplified and then use a piece of translation code to generate the config of the standard format. Refer to sample table/form/app1 for more detail.
 
-And normally 80% pages are quite similiar or they could be summarized into several templates in a real project. So we could define the discrepancy into a config file, and then render the page according to the configuration. Refer to sample app1 for more detail.
+And normally 80% pages are quite similar or they could be summarized into several templates in a real project. So we could define the discrepancy into a config file, and then render the page according to the configuration. Refer to sample app1 for more detail.
 
 And this project is also the fundamental technology of MTTK low code.
 
