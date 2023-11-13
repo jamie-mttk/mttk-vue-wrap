@@ -5,7 +5,7 @@
 Run the below command to add mttk-vue-wrap into project
 
 ```sh
-npm install mttk-vue-wrap -save
+npm install mttk-vue-wrap --save
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ You can import the component in main.ts/main.js globally
 import MttkVueWrap from 'mttk-vue-wrap';
 //Create vue app
 const app=createApp(App)
-//Install MttkWrapComp globally
+//Register MttkWrapComp globally
   app.use(MttkVueWrap);
 ```
 
@@ -33,46 +33,54 @@ import {MttkWrapComp} from 'mttk-vue-wrap'
 ### General
 
 We highly recommand to go through all the demos first and then read this manual.
-The below introduction is based on [element plus](https://github.com/element-plus/element-plus). But this project can work with other component library as well.
-The config is a Javascript Object(Call JSON later). The first character of the key indicate the type, for example sys,props,slots,events,etc.
+The below introduction is based on [element plus](https://github.com/element-plus/element-plus). But this project can work with other vue3 based component library as well.
+The config is a Javascript Object(Call JSON later). The first character of the key indicate the type, for example basic, props, slots, events, etc.
 
 Here is a example,which will render a element-plus button.
 
 ```sh
 
 {
+  //This means el-button will be rendered
   '~component': 'el-button',
+  //props
   type: 'primary',
+  size: 'large',
+  //Slot
   '#default': 'Test button',
+  //Event 
   '@click': () => { console.log('clicked', arguments) }
 }
 
 ```
 
+### Configuration key
+
 The meaning of the first character of the key is described below
 |key     | description  |
 |  ----  | ----  
-|  ~     | Component basic configuration,such as component, modelValue,etc.|
+|  ~     | Basic,such as component, modelValue,etc.|
 | @      | Event|
 | #      | Slot |
 | ^      | Lifecycle |
 | Other  | Props, if key is started with letter, consider it is a prop |
 
+
+### Configuration evaluation
+
 The configuration can be a JSON or a funciton. If it is a funciton the parameter is the context described below and the return value should be the JSON described in this chapter.
 
 ### Context
 
-"context" is used to for the config to interact with engine.
+"context" is used to for the config to interact with redner engine.
 The context has the follow contents. 
-|key     | description  |
-|  ----  | ----         |
+|key         | description  |
+|  ----      | ----         |
 | slotPara   | If it is under a slot, this is the slot parameter(s) |
 | parent     | The parent context |
 | modelValue | The modelValue of this component, undefined is returned if not set|
 | getRef     | Refer to the getRef chapter below|
 | instanceKey| Instance key of this component|
-
-
 
 ### basic
 
@@ -80,7 +88,7 @@ Basic configuration key is started with '~'
 
 | property      | description  |
 |  ----         | ----  |
-| component     | The base component,'~component' can be simplified as '~'|
+| component     | The base component,'~component' can be simplified to '~'|
 | modelValue    | Refer to v-model  |
 | modelValuePath| Refer to v-model  |
 | modelValueName| Refer to v-model  |
@@ -88,20 +96,19 @@ Basic configuration key is started with '~'
 | show          | It will set to v-show, the value can be a computed or ref/reactive variable|
 | instanceKey   | Refer to instanceKey  |
 
-
 #### component
 
+'component' will evaluated to the proper component by data type.
 | Type      | Description  | Sample |
 |  ----         | ----  |----  |
-| String   | The component name which is registered with [app.component](https://vuejs.org/api/application.html#app-component)  | component:'ElButton'/ 'el-button'|
-| Promise  | Normally it is an import as sample |  import('./Tester.vue')|
-| Function | Function component | Refer to function component |
-| Component|Import first and then use it|import Tester from './Tester.vue' component:Tester|
+| String   | The component name which is registered with [app.component](https://vuejs.org/api/application.html#app-component)  | '~component':'ElButton' or  'el-button'|
+| Promise  | Normally it is imported as sample | '~component':import('./Tester.vue')|
+| Function | Function component | Refer to function component chapter below|
+| Component|Import first and then use it|import Tester from './Tester.vue' <br> '~component':Tester|
 
 If it is not set,use default value 'div'.
 
-
-#### modelValue/modelValuePath/modelValueName
+#### v-model
 
 If the base component has no v-model( for example e-row/el-col), then modelValue is not necessary to set.
 "modelValueName" is used to set the name if it is not veue3 default value 'modelValue'
