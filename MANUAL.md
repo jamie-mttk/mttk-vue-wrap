@@ -82,7 +82,7 @@ The context has the follow contents.
 | getRef     | Refer to the getRef chapter below|
 | instanceKey| Instance key of this component|
 
-### basic
+### Basic
 
 Basic configuration key is started with '~'
 
@@ -114,12 +114,12 @@ If the base component has no v-model( for example e-row/el-col), then modelValue
 "modelValueName" is used to set the name if it is not veue3 default value 'modelValue'
 There are three methods to set v-model
 
-1. v-model is defined by a variable,just set the modelValue to that variable.  Refer to demo 'Concept' -  configInput2.
+1. v-model is defined by a variable,just set the modelValue to that variable.  
 
 ```sh
     const valueInput = ref("InitValue");
 
-    modelValue: valueInput,
+    '~modelValue': valueInput,
 ```
 
 2. A wriable computed -  Refer to [vue3 manual](https://vuejs.org/guide/essentials/computed.html#writable-computed)
@@ -127,7 +127,7 @@ There are three methods to set v-model
 ```sh
 const valueInput = ref("InitValue");
 //The below code equal to modelValue: valueInput,  just to demo how to use computed to set modelValue
-modelValue: computed({
+'~modelValue': computed({
     get() {
     return valueInput.value
     },
@@ -137,15 +137,14 @@ modelValue: computed({
 }),
 ```
 
-3. modelValue + modelValuePath, the typical use case is form. The form item value is a subset of form value.
-Refer to demo 'Form' - formConfig1
+3. modelValue + modelValuePath, the typical use case is to set the form item value inside a form.
 
 ```sh
-sys: {
-    component: "ElInput",
-    modelValue: formValue,
-    modelValuePath:'address',
-},
+const formValue=reactive({})
+
+'~component': "ElInput",
+'~modelValue': formValue,
+'~modelValuePath':'address',
 ```
 
 Please note in the above example, config like ***modelValue: formValue.address*** does NOT work.
@@ -174,7 +173,6 @@ const inputSize=ref('small')
 
 To dynamically change the props value, you can set the prop value to a ref/computed or reactive. Refer to the size prop of the above example. If the value of inputSize is changed, the component size will change as well.
 
-
 ### slots
 
 #### Structure
@@ -191,20 +189,21 @@ The key of slot is started with '#'
 #### Slot define
 
 The data type of the slot define will be explained as below
-Note1:   '#default' can be simplified as '#'
-Note2：  slotPara is the slot paramter
+Note1:   '#default' can be simplified to '#'
+Note2：  slotPara is the  slot props
 
 |Type         | Description  |
 |  ----       | ----  |
-| undeined | Generate nothing, normally to show the slot default content|
-| function | Eval with parameter slotPara and contextWrapper,the return value will be re-explained with this table again|
+| undeined | Generate nothing, normally to show the slot fallback content|
+| function | Eval with parameter slotPara and contextWrap,the return value will be re-explained with this table again|
 | String   | If it is started with '#',consider as a slot inherit(Explain later);otherwise render as HTML|
 | vNode    | Render directly |
 | object   | Consider as a MttkVueWrap config,render with MttkVueWrap|
 | Other    | No meaning |
 
 #### Slot inherit
-Slot inherit is something like define a new slot. Below code is vue3 standard slot define.
+
+Slot inherit is something like define a new slot to be used by the caller. Below code is vue3 standard slot define.
 
 ```sh
 
@@ -212,7 +211,7 @@ Slot inherit is something like define a new slot. Below code is vue3 standard sl
 
 ```
 
-Same as the below code of this project which will define a slot named header under default slot.
+Same as the above code below code defines a slot named header under default slot.
 
 ```sh
 
@@ -220,8 +219,7 @@ Same as the below code of this project which will define a slot named header und
 
 ```
 
-Where the slot will be linked is quite interesting. Normally engine will automatically find untill if there is a function component or the root the configuration.
-
+Where the slot will be linked is quite interesting. Normally engine will automatically find untill either a function component or the configuration root .
 
 ### event
 
@@ -233,18 +231,18 @@ The key of the event is started with '@'
 
 }
 ```
+
 The data type of the event handler will be explaiined as below
-
-
 |Type         | Description  |
 |  ----       | ----  |
 |undefined|Same as {type:'inherit',value:key of the event} |
 |string|Same as {type:'inherit',value:value of the event} |
-|function|Same as {type:'function',}|
+|function|Same as {type:'function',value:function provided}|
 |object | Explain below|
 |Other|No meaning|
 
 #### Event object
+
 The object should have following properties
 
 |Prop         | Description  |
@@ -254,19 +252,21 @@ The object should have following properties
 |value|If type is inherit, it is the event name to emit;if type is function,it should be a function |
 
 #### paraMode
+
+It defined the parameters to transfer to the inherit slot or event handling function.
 |Value         | Description  |
 |  ----       | ----  |
-|raw | the original event parameter |
-|contextFirst |  add context as the first parameter |
-|contextLast | add context as the last parameter |
-|combine | combile context/para into one object |
+|raw | The original event parameter |
+|contextFirst |  Add context as the first parameter |
+|contextLast | Aad context as the last parameter |
+|combine | Combile context/para into one JSON object |
 
 #### Event inherit
 
 It is something like vue3 context.emit(...)
 The logic of which componne to catch the event is same as slot inherit.
 
-#### Event modifiers 
+#### Event modifiers
 
 Event modifier is supported by add after '.'. The below examples are valid.
 
@@ -281,7 +281,6 @@ Event modifier is supported by add after '.'. The below examples are valid.
 ### style and class
 
 They are set as normal prop with key 'style' and 'class'. The only difference is engine will try to eval the value into object or array.
-
 
 ### lifecycle
 
@@ -299,10 +298,9 @@ The key of the lifecycle is started with '^'
 
 Refer to the above sample, the lifecycle handler is a function.
 
-
 ### getRef
 
-"getRef" function returns the vue component instance. The input parameter is the instanceKey.
+"getRef" function returns the vue component instance. This is a function exposed by MttkVueWrap. The input parameter is the instanceKey.
 Below is a example, some of the configurations are ignored.
 
 ```sh
@@ -330,12 +328,11 @@ So you could use the below code to get the element reference of component XXX,YY
 
 And parameter of getRef is optional, it is not provided, the instanceKey of the current component is used
 
-
 ## Function component
 
-### General
+### Introduction
 
-The goal of function component is to encapsulate a component into a function which can be rendered by MttkWrapComp directly.
+The goal of function component is to encapsulate a component into a function which can be rendered by MttkWrapComp directly. On the other word, it can be a replacement of .vue file.
 
 ### Paramters
 
@@ -344,14 +341,14 @@ The goal of function component is to encapsulate a component into a function whi
 |config | the configuration to call this function component |
 |contextWrap | Context object |
 
-### Return 
+### Return value
 
-The return value is a JSON, the first prop is config which is a standard componnet config; the second one is methods(Optional),which returns methods which can be called by getRef of this function component
+The return value is a JSON, the first prop is config which is a standard componnet config; the second one is a set of methods(Optional),which returns methods which can be called by getRef on this function component
 
-### Sample
+### Example
 
 Here defines a simple button function component. The outer 'div' has no meaning, it is only used for demostration.
-And there are two methods defined with name m1 and m2
+And there are two methods defined with name m1 and m2. Please note method can interact with engine with contextWrap.
 
 ``` sh
 
@@ -384,10 +381,10 @@ const config = {
   caption: 'Test button'
 }
 
-``` 
+```
 
 ## Release note
 
-### v0.1.5 2023/11/10
+### v0.1.7 2023/11/10
 
 1. First release
