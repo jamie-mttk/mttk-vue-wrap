@@ -1,6 +1,7 @@
 <script lang="ts">
+import {defineComponent} from 'vue'
 import { useCompBase } from './compBase'
-export default {
+export default defineComponent({
     //Set to false to avoid events set on MttkWrapComp to be automatically apply to config root component
     inheritAttrs: false,
     props: {
@@ -41,5 +42,5 @@ export default {
         //
         return () => wrapRender()
     },
-}
+})
 </script>

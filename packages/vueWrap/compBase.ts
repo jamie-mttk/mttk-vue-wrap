@@ -8,6 +8,19 @@ import { buildEvents } from "./compBaseEvent";
 import { buildSlots } from "./compBaseSlot";
 import { buildLifeCycle } from "./compBaseLifecycle";
 
+
+// export interface contextWrapType{
+//   parent: contextWrapType|undefined,
+//   slotPara: object,
+//   getRef:(instanceKey:string)=>any,
+//   instanceKey: string|Symbol,
+//   //Internal use only
+//   props:object，
+//   context:any,
+//   modelValue:any,
+//   configStd:object,
+//   }
+
 export function useCompBase(props, context) {
   //Here we have the standard config
   //Since some attributes of contextWrap is unavailable, so here call buildContextBasic
@@ -46,7 +59,6 @@ export function useCompBase(props, context) {
       },
       ...propsReal.value,
       ...eventsReal.value,
-
     };
   });
 
@@ -57,7 +69,9 @@ export function useCompBase(props, context) {
   //
   //The final render function
   function wrapRender(): any {
+    // console.log(ifFlag.value,configStd)
     if (!ifFlag.value) {
+      // console.log('#################',configStd)
       return undefined;
     }
     //

@@ -1,4 +1,4 @@
-import {computed,defineAsyncComponent,resolveComponent} from 'vue'
+import {computed,defineAsyncComponent,resolveComponent,unref} from 'vue'
 import {  isPromise } from "./compBaseUtil";
 import { compGenerator } from "./compGenerator";
 
@@ -40,7 +40,9 @@ export function buildMisc(contextWrap,configStd){
       return true;
     }
     //
-    return !!ret.value;
+    // console.log(ret,configStd)
+    //
+    return !!unref(ret);
   });
   //Whether there is a v-sow setting
   //true means there is a v-show setting
@@ -54,7 +56,7 @@ export function buildMisc(contextWrap,configStd){
       return true;
     }
     //
-    return !!ret.value;
+    return !!unref(ret);
   });
   //Component key
   const keyComp=computed(()=>{
