@@ -1,6 +1,6 @@
 # 开发者手册 
 
-[English manual] (https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL.md)
+[English manual](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL.md)
 
 ## 安装 
 

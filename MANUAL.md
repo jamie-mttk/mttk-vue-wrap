@@ -1,6 +1,6 @@
 # Developer Manual
 
-[中文手册] (https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL_CN.md)
+[中文手册](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL_CN.md)
 
 ## Installation
 

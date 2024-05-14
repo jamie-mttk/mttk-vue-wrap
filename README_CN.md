@@ -1,6 +1,6 @@
 # Mttk Vue Wrap  
 
-[English Readme] (https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/README.md)
+[English Readme](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/README.md)
 
 ## 项目介绍  
 
