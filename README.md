@@ -1,5 +1,7 @@
 # Mttk Vue Wrap
 
+[中文说明] (https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/README_CN.md)
+
 ## What is it?
 
 This project implement Vue3 component with pure Javascript instead of Single-File Component(SFC) and could co-work with SFC together.

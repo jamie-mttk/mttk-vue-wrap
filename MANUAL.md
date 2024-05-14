@@ -1,5 +1,7 @@
 # Developer Manual
 
+[中文手册] (https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL_CN.md)
+
 ## Installation
 
 Run the below command to add mttk-vue-wrap into project
@@ -39,7 +41,6 @@ The config is a Javascript Object(Call JSON later). The first character of the k
 Here is a example,which will render a element-plus button.
 
 ```sh
-
 {
   //This means el-button will be rendered
   '~component': 'el-button',
@@ -51,7 +52,6 @@ Here is a example,which will render a element-plus button.
   //Event 
   '@click': () => { console.log('clicked', arguments) }
 }
-
 ```
 
 ### Configuration key
@@ -59,12 +59,11 @@ Here is a example,which will render a element-plus button.
 The meaning of the first character of the key is described below
 |key     | description  |
 |  ----  | ----  
-|  ~     | Basic,such as component, modelValue,etc.|
+| ~     | Basic,such as component, modelValue,etc.|
 | @      | Event|
 | #      | Slot |
 | ^      | Lifecycle |
 | Other  | Props, if key is started with letter, consider it is a prop |
-
 
 ### Configuration evaluation
 
@@ -98,7 +97,7 @@ Basic configuration key is started with '~'
 
 #### component
 
-'component' will evaluated to the proper component by data type.
+'~component' will evaluated to the proper component by data type.
 | Type      | Description  | Sample |
 |  ----         | ----  |----  |
 | String   | The component name which is registered with [app.component](https://vuejs.org/api/application.html#app-component)  | '~component':'ElButton' or  'el-button'|
@@ -111,15 +110,14 @@ If it is not set,use default value 'div'.
 #### v-model
 
 If the base component has no v-model( for example e-row/el-col), then modelValue is not necessary to set.
-"modelValueName" is used to set the name if it is not veue3 default value 'modelValue'
+"modelValueName" is used to set the name if it is not set, default value 'modelValue' is used
 There are three methods to set v-model
 
-1. v-model is defined by a variable,just set the modelValue to that variable.  
+1. v-model is defined by a variable,just set the modelValue to that variable. Both ref and reactive are supported. 
 
 ```sh
-    const valueInput = ref("InitValue");
-
-    '~modelValue': valueInput,
+    const valueInput = ref("InitValue")
+    '~modelValue': valueInput
 ```
 
 2. A wriable computed -  Refer to [vue3 manual](https://vuejs.org/guide/essentials/computed.html#writable-computed)
@@ -134,7 +132,7 @@ const valueInput = ref("InitValue");
     set(value) {
     valueInput.value=value
     }
-}),
+})
 ```
 
 3. modelValue + modelValuePath, the typical use case is to set the form item value inside a form.
@@ -162,13 +160,11 @@ Keys start with letter are considered as props.
 ```sh
 const inputSize=ref('small')
 
-
-    placeholder: "Please input value complex sample",
-    clearable: true,
-    prefixIcon: "Calendar",
-    disabled: false,
-    size: inputSize,
-
+placeholder: "Please input value complex sample",
+clearable: true,
+prefixIcon: "Calendar",
+disabled: false,
+size: inputSize,
   ```
 
 To dynamically change the props value, you can set the prop value to a ref/computed or reactive. Refer to the size prop of the above example. If the value of inputSize is changed, the component size will change as well.
@@ -183,7 +179,7 @@ The key of slot is started with '#'
 '#slot1':slot define 1,
 '#slot2':slot define 2,
 ...
-}
+
 ```
 
 #### Slot define
@@ -195,7 +191,7 @@ Note2：  slotPara is the  slot props
 |Type         | Description  |
 |  ----       | ----  |
 | undeined | Generate nothing, normally to show the slot fallback content|
-| function | Eval with parameter slotPara and contextWrap,the return value will be re-explained with this table again|
+| function | Eval with parameter slotPara and context,the return value will be re-explained with this table again|
 | String   | If it is started with '#',consider as a slot inherit(Explain later);otherwise render as HTML|
 | vNode    | Render directly |
 | object   | Consider as a MttkVueWrap config,render with MttkVueWrap|
@@ -206,17 +202,13 @@ Note2：  slotPara is the  slot props
 Slot inherit is something like define a new slot to be used by the caller. Below code is vue3 standard slot define.
 
 ```sh
-
 <slot name="header"></slot>
-
 ```
 
 Same as the above code below code defines a slot named header under default slot.
 
 ```sh
-
 '#default':'#header'
-
 ```
 
 Where the slot will be linked is quite interesting. Normally engine will automatically find untill either a function component or the configuration root .
@@ -228,8 +220,6 @@ The key of the event is started with '@'
 ```sh
 '@event1':event handle1,
 '@event2':event handle2
-
-}
 ```
 
 The data type of the event handler will be explaiined as below
@@ -244,7 +234,6 @@ The data type of the event handler will be explaiined as below
 #### Event object
 
 The object should have following properties
-
 |Prop         | Description  |
 |  ----       | ----  |
 |type| 'inherit' or 'function'|
@@ -257,9 +246,9 @@ It defined the parameters to transfer to the inherit slot or event handling func
 |Value         | Description  |
 |  ----       | ----  |
 |raw | The original event parameter |
-|contextFirst |  Add context as the first parameter |
-|contextLast | Aad context as the last parameter |
-|combine | Combile context/para into one JSON object |
+|contextFirst | Add the context as the first parameter, followed by the original parameters of the event |
+|contextLast | Add the context as the last parameter, and the front is the original parameter of the event |
+|combine | Combine the context/parameter into a JSON object. The context key value is context and the parameter is args |
 
 #### Event inherit
 
@@ -271,11 +260,9 @@ The logic of which componne to catch the event is same as slot inherit.
 Event modifier is supported by add after '.'. The below examples are valid.
 
 ```sh
-
 '@click':event handler,
 '@click.once':event handler,
 '@row-dbclick.once.stop':event handler,
-
 ```
 
 ### style and class
@@ -286,8 +273,7 @@ They are set as normal prop with key 'style' and 'class'. The only difference is
 
 The key of the lifecycle is started with '^'
 
-```sh
-  
+```sh  
     '^onMounted': function () {
       console.log('Component is mounted>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     },
@@ -304,18 +290,17 @@ Refer to the above sample, the lifecycle handler is a function.
 Below is a example, some of the configurations are ignored.
 
 ```sh
-    
-	{'~': XXX,
-     '~instanceKey':'key1'
-    '#':[{
-          '~': YYY,
-          '~instanceKey':'key2'
-		},
-		{
-        '~': ZZZ,
-        '~instanceKey':'key3'
+{  '~': XXX,
+  '~instanceKey':'key1'
+  '#':[{
+      '~': YYY,
+      '~instanceKey':'key2'
+      },
+      {
+      '~': ZZZ,
+      '~instanceKey':'key3'
       }]
-    }
+}
 ```
 
 So you could use the below code to get the element reference of component XXX,YYY,ZZZ. Please note the return value is NOT a ref, so no need to add ".value" after it to call method
@@ -334,12 +319,12 @@ And parameter of getRef is optional, it is not provided, the instanceKey of the 
 
 The goal of function component is to encapsulate a component into a function which can be rendered by MttkWrapComp directly. On the other word, it can be a replacement of .vue file.
 
-### Paramters
+### Function paramters
 
 |Parameter         | Description  |
 |  ----       | ----  |
 |config | the configuration to call this function component |
-|contextWrap | Context object |
+|context | Context object |
 
 ### Return value
 
@@ -348,11 +333,10 @@ The return value is a JSON, the first prop is config which is a standard componn
 ### Example
 
 Here defines a simple button function component. The outer 'div' has no meaning, it is only used for demostration.
-And there are two methods defined with name m1 and m2. Please note method can interact with engine with contextWrap.
+And there are two methods defined with name m1 and m2. Please note method can interact with engine with context.
 
 ``` sh
-
-function buttonComp(c, contextWrap) {
+function buttonComp(c, context) {
   return {
     config: {
       '~': 'div',
@@ -368,25 +352,25 @@ function buttonComp(c, contextWrap) {
     }
   }
 }
-
 ```
 
 Below is the configuration to use the above function component
 
 ``` sh
-
 const config = {
   '~': buttonComp,
   type: 'success',
   caption: 'Test button'
 }
-
 ```
-
-
 
 ## Release note
 
 ### v0.1.7 2023/11/10
 
 1. First release
+
+### v0.2.6 2024/05/14
+
+1. Minior updates and documentation translation
+   
