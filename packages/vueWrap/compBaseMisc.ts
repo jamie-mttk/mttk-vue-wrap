@@ -13,7 +13,7 @@ export function buildMisc(contextWrap,configStd){
   //if it is a function,consider it as a our function component
   //Otherwise consider it is a component(and try to resolve if it is a string)
   const baseComponent = computed(() => {
-    const component = configStd["~component"] || configStd["~"];
+    const component = configStd.value["~component"] || configStd.value["~"];
     //
     if (!component) {
       return "div";
@@ -35,7 +35,7 @@ export function buildMisc(contextWrap,configStd){
   });
   //handing possible v-if
   const ifFlag = computed(() => {
-    const ret = configStd["~if"];
+    const ret = configStd.value["~if"];
     if (ret == undefined) {
       return true;
     }
@@ -47,11 +47,11 @@ export function buildMisc(contextWrap,configStd){
   //Whether there is a v-sow setting
   //true means there is a v-show setting
   const hasShowFlag = computed(() => {
-    return configStd["~show"]!=undefined;
+    return configStd.value["~show"]!=undefined;
   });
   //handling possible v-show
   const showFlag = computed(() => {
-    const ret = configStd["~show"];
+    const ret = configStd.value["~show"];
     if (ret == undefined) {
       return true;
     }

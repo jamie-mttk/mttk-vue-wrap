@@ -13,14 +13,14 @@ export function buildSlots(contextWrapper, configStd) {
       //
       const slots = {};
       //
-      for (const key of Object.keys(configStd)) {
+      for (const key of Object.keys(configStd.value)) {
         if (!key.startsWith("#")) {
           continue;
         }
         //
         slots[key == "#" ? "default" : key.substring(1)] = function (slotPara) {
           const result = [] as Object[];
-          handleSlotSingle(contextWrapper,properContext, result, slotPara, configStd[key]);
+          handleSlotSingle(contextWrapper,properContext, result, slotPara, configStd.value[key]);
           // console.log(result)
           //
           if (result.length == 0) {

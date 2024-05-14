@@ -1,24 +1,28 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent,provide,inject} from 'vue'
 import { useCompBase } from './compBase'
 export default defineComponent({
     //Set to false to avoid events set on MttkWrapComp to be automatically apply to config root component
-    inheritAttrs: false,
+    inheritAttrs: true,
+    emits: ['init'],
     props: {
         //Standard config 
-        config: {
-            type: Object,
-            required: true,
-            default() {
-                return {}
-            }
-        },
+        // config: {
+        //     type: Object,
+        //     required: true,
+        //     default() {
+        //         return {}
+        //     }
+        // },
+        config:[Object, Function],
         //To build the component hierachy
         contextParent: {
             type: Object,
             required: false,
             default() {
-                return undefined
+               //If not provided, try to inject from parent's provide
+               // return inject('contextWrap')
+                 return undefined
             }
         },
         //The slot para if it is under a slot;undefined if it is a root component
@@ -30,15 +34,23 @@ export default defineComponent({
             }
         },
     },
-    setup(props, context) {
+    setup(props, context) { 
         //
-        // console.log(context)
-        const { wrapRender, getRef } = useCompBase(props, context)
+        // console.log('1111', context.attrs)
+        //  console.log('2222',context)
+
+
+        const {wrapRender,info} = useCompBase(props, context)
         //
         // regiesterLifeCycles()
         // Expose public function 
         //getRef: return the component instance
-        context.expose({ getRef });
+        context.expose(info);
+        //
+        context.emit('init',info)
+        //
+        // console.log('inject....',inject('contextWrap'))
+        provide('contextWrap',info.contextWrap)
         //
         return () => wrapRender()
     },

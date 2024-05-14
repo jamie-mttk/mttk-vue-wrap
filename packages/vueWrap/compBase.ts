@@ -1,4 +1,5 @@
 import { computed, unref, toRaw, vShow, withDirectives, h } from "vue";
+import { computedAsync } from "@vueuse/core";
 import { standardizedConfig, genUniqueStr } from "./compBaseUtil";
 import { buildModelValue } from "./compBaseModelValue";
 import { buildMisc } from "./compBaseMisc";
@@ -7,7 +8,6 @@ import { buildProps } from "./compBaseProp";
 import { buildEvents } from "./compBaseEvent";
 import { buildSlots } from "./compBaseSlot";
 import { buildLifeCycle } from "./compBaseLifecycle";
-
 
 // export interface contextWrapType{
 //   parent: contextWrapType|undefined,
@@ -24,14 +24,19 @@ import { buildLifeCycle } from "./compBaseLifecycle";
 export function useCompBase(props, context) {
   //Here we have the standard config
   //Since some attributes of contextWrap is unavailable, so here call buildContextBasic
-  const configStd = standardizedConfig(buildContextBasic(), props.config);
-
+  //change to computed at 2023/12/18,otherwise the change to props.config will not take affect
+  const contextBasic = buildContextBasic();
+  const configStd = computed( () => {
+    return standardizedConfig(contextBasic, props.config);
+  });
+  // console.log("EVAL", JSON.stringify(configStd.value));
   //modelValue
-  const { modelValue, modelValueName } = buildModelValue(configStd);
+  const { hasModelValue, modelValue, modelValueName } =
+    buildModelValue(configStd);
   //
   const { setComponentInstance, getRef } = buildInstance(configStd);
   //contextWrap of this component
-  const contextWrap = buildContext();
+  const contextWrap = buildContext(contextBasic);
   //
   const { baseComponent, ifFlag, hasShowFlag, showFlag } = buildMisc(
     contextWrap,
@@ -48,18 +53,25 @@ export function useCompBase(props, context) {
   // propsReal(propsMost);
   //modelValue should be evaluated every render, so put it into computed
   const propsAll = computed(() => {
-    return {
+    const all = {
       //ref
       ref: setComponentInstance,
+      key: configStd.value["~instanceKey"],
 
-      //model value
-      [modelValueName.value]: modelValue.value,
-      ["onUpdate:" + modelValueName.value]: (value) => {
-        modelValue.value = value;
-      },
       ...propsReal.value,
       ...eventsReal.value,
     };
+
+    //Add modelValue if modelValue is configured
+    if (hasModelValue.value) {
+      //model value
+      (all[modelValueName.value] = modelValue.value),
+        (all["onUpdate:" + modelValueName.value] = (value) => {
+          modelValue.value = value;
+        });
+    }
+    //
+    return all;
   });
 
   //slots
@@ -75,7 +87,7 @@ export function useCompBase(props, context) {
       return undefined;
     }
     //
-    //  console.log('render is called',unref(baseComponent), unref(propsAll))
+    // console.log('render is called',unref(baseComponent), unref(propsAll))
     //
 
     const result = h(unref(baseComponent), unref(propsAll), unref(slots));
@@ -98,19 +110,28 @@ export function useCompBase(props, context) {
   //Because of the JS Hoisting, parseConfig can not access contextWrap directly
   //Error:  can't access lexical declaration 'contextWrap' before initialization
   //This is the contextWrap of THIS CompWrap component
-  function buildContext() {
-    return {
-      ...buildContextBasic(),
-      modelValue,
-      getRef,
-      instanceKey: configStd["~instanceKey"],
-      configStd, //Internal use only
-    };
+  function buildContext(contextBasic) {
+    // return {
+    //   ...contextBasic,
+    //   modelValue,
+    //   getRef,
+    //   instanceKey: configStd.value["~instanceKey"],
+    //   configStd, //Internal use only
+    // };
+    //Changed by Jamie @2024/01/16
+    //Reuse contextBasic so we could get the below attributes from contextBasic after then
+    contextBasic.modelValue = modelValue;
+    contextBasic.getRef = getRef;
+    contextBasic.instanceKey = configStd.value["~instanceKey"];
+    contextBasic.configStd = configStd;
+    //
+    //
+    return contextBasic;
   }
 
   //
   const registerLifeCycles = buildLifeCycle(contextWrap, configStd);
   registerLifeCycles();
   //
-  return { wrapRender, getRef };
+  return { wrapRender, info: { getRef, contextWrap } };
 }

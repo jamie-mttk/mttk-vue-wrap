@@ -30,7 +30,7 @@ export function buildLifeCycle(contextWrap,configStd){
   //lifecycle
   function invokeLifecycle(type: string, ...args) {
     // console.log('**************'+type,contextWrap)
-    const handler = configStd["^" + type];
+    const handler = configStd.value["^" + type];
     if (!handler) {
       return;
     }

@@ -15,7 +15,7 @@ export function getByPath(data:any,path:string){
      // console.log(i+'==>'+pathItems[i]+'~~~'+JSON.stringify(temp))
       temp=temp[pathItems[i]]
       //console.log(JSON.stringify(temp))
-      if(!temp){
+      if(temp==undefined){
         return undefined
       }
     }

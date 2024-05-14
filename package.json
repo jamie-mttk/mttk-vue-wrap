@@ -1,6 +1,6 @@
 {
   "name": "mttk-vue-wrap",
-  "version": "0.1.9",
+  "version": "0.2.5",
   "description": "An alternative way of wrapping vue 3 component with pure JS",
   "main": "./dist/mttk-vue-wrap.umd.js",
   "module": "./dist/mttk-vue-wrap.mjs",
@@ -24,6 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.2",
     "vue": "^3.2.45"
   },
   "devDependencies": {

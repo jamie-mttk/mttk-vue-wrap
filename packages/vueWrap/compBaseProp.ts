@@ -3,14 +3,14 @@ import { computed, unref } from "vue";
 export function buildProps(contextWrapper, configStd) {
     return  computed(() => {
     //If component is function ,wrap all the props into config prop
-    let component = configStd["~component"] || configStd["~"];
+    let component = configStd.value["~component"] || configStd.value["~"];
     if (typeof component == "function") {
-      return { config: configStd };
+      return { config: configStd.value };
     }
     //
     const result = {};
     //
-    for (const key of Object.keys(configStd)) {
+    for (const key of Object.keys(configStd.value)) {
       // if (
       //   key.startsWith("~") ||
       //   key.startsWith("!")||
@@ -27,7 +27,7 @@ export function buildProps(contextWrapper, configStd) {
         continue;
       }
       //please note,unref is used here
-      result[key] = unref(configStd[key]);
+      result[key] = unref(configStd.value[key]);
       //style
       handlePossibleStyle(result)
       //class

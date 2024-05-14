@@ -383,6 +383,10 @@ const config = {
 
 ```
 
+## License
+
+MIT
+
 ## Release note
 
 ### v0.1.7 2023/11/10

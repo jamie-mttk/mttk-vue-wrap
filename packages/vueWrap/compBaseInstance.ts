@@ -19,7 +19,7 @@ export function buildInstance(configStd) {
   }
 //This function is to set this component instance to global(use obtainInstances) storage
 function setComponentInstance(el) {
-    let key = configStd["~instanceKey"];
+    let key = configStd.value["~instanceKey"];
     // console.log(key,el)
     if (!key) {
       //since key is always set,so the code should NOT go here
@@ -38,7 +38,7 @@ function setComponentInstance(el) {
   function getRef(instanceKey: string) {
     //if instanceKey is not provided,assume to get the current component
     if (!instanceKey) {
-      instanceKey = configStd["~instanceKey"];
+      instanceKey = configStd.value["~instanceKey"];
     }
     //
     if (!instanceKey || !instances) {

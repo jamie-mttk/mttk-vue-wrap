@@ -2,10 +2,12 @@ import { isRef, isReactive, toRaw, inject } from "vue";
 
 //Conver to standard format if the config is flat format
 //Add missing fields: so far only instanceKey is added
-export function standardizedConfig(contextWrap, config) {
+export  function standardizedConfig(contextWrap, config) {
   //eval if config is a funciton
   if (typeof config == "function") {
     config = config(contextWrap);
+  // }else if (isPromise(config)){
+  //   config=await config(contextWrap)
   }
   //
   //get raw config,consider ref or reactive

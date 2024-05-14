@@ -8,16 +8,16 @@ export function buildEvents(contextWrap, configStd: any) {
     //
     const result = {};
     //
-    for (const key of Object.keys(configStd)) {
+    for (const key of Object.keys(configStd.value)) {
       if (!key.startsWith("@")) {
         continue;
       }
       //
-      const eventValue = configStd[key];
+      const eventValue = configStd.value[key];
       //
       const eventConfigStd = formatEventConfig(key, eventValue);
       //
-      if (!eventConfigStd) {
+      if (!eventConfigStd||!eventConfigStd.value==undefined) {
         continue;
       }
 
@@ -164,7 +164,7 @@ function emitEvent(contextWrap,properContext,eventName,...argsFinal){
   //  console.log( eventName, properContext);
    if(!properContext.parent){
      //If it is root we need to manuallly call the functions defined in config
-     const  eventConfigPossible=properContext.configStd['@'+eventName]
+     const  eventConfigPossible=properContext.configStd.value['@'+eventName]
      if(eventConfigPossible){
       const eventConfigStd=formatEventConfig('@'+eventName,eventConfigPossible)
       if(eventConfigStd.type=='function'){

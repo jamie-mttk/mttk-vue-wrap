@@ -1,41 +1,48 @@
-
-import {computed,isRef,unref} from 'vue'
+import { computed, isRef, unref } from "vue";
 import { getByPath, setByPath } from "./pathUtil";
 
-export  function buildModelValue(configStd){
-    //modelValue
+export function buildModelValue(configStd) {
+  //whether modelValue is configured.If not, do not build modelValue otherwise it may have unexpected result
+  const hasModelValue = computed(() => {
+    return  (configStd && configStd.value != undefined && configStd.value.hasOwnProperty("~modelValue")) 
+  });
+  //modelValue
   const modelValue = computed({
     get() {
       //
-      if (!configStd) {
+      if (!hasModelValue.value) {
         return undefined;
       }
-      let modelValuePath = configStd["~modelValuePath"];
+      let modelValuePath = configStd.value["~modelValuePath"];
       if (modelValuePath) {
-        return getByPath(unref(configStd["~modelValue"]), modelValuePath);
+        return getByPath(unref(configStd.value["~modelValue"]), modelValuePath);
       } else {
-        return unref(configStd["~modelValue"]);
+        return unref(configStd.value["~modelValue"]);
       }
     },
     set(valueNew) {
       //
-      if (!configStd) {
-        return ;
-      }
-      //
-      if (!configStd.hasOwnProperty("~modelValue")) {
-        //do nothing
+      if (!hasModelValue.value) {
         return;
       }
       //
-      let modelValuePath = configStd["~modelValuePath"];
+      // if (!configStd.value.hasOwnProperty("~modelValue")) {
+      //   //do nothing
+      //   return;
+      // }
+      //
+      let modelValuePath = configStd.value["~modelValuePath"];
       if (modelValuePath) {
-        setByPath(unref(configStd["~modelValue"]), modelValuePath, valueNew);
+        setByPath(
+          unref(configStd.value["~modelValue"]),
+          modelValuePath,
+          valueNew
+        );
       } else {
-        if (isRef(configStd["~modelValue"])) {
-          configStd["~modelValue"].value = valueNew;
+        if (isRef(configStd.value["~modelValue"])) {
+          configStd.value["~modelValue"].value = valueNew;
         } else {
-          configStd["~modelValue"] = valueNew;
+          configStd.value["~modelValue"] = valueNew;
         }
       }
     },
@@ -43,8 +50,8 @@ export  function buildModelValue(configStd){
   //modelValueName
   const modelValueName = computed(() => {
     //
-    return configStd["~modelValueName"] || "modelValue";
+    return configStd.value["~modelValueName"] || "modelValue";
   });
   //
-  return {modelValue,modelValueName} 
+  return {hasModelValue, modelValue, modelValueName };
 }
