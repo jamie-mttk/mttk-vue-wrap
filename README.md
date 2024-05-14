@@ -64,3 +64,7 @@ And this project is also the fundamental technology of MTTK low code.
 
 Type script is not well supported.
 Some Vue 3 features can not not supported,refer to developer manual for more detail.
+
+## License
+
+Mttk Vue Wrap is open source software licensed as MIT.

@@ -383,9 +383,7 @@ const config = {
 
 ```
 
-## License
 
-MIT
 
 ## Release note
 
