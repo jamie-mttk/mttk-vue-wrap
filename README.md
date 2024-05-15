@@ -11,13 +11,13 @@ So developer could config a component with Javascript rather than to write a ful
 This project incldues two projects:
 
 * [Core project](https://github.com/jamie-mttk/mttk-vue-wrap) which implements the full functionalities
-* [Demo project](https://github.com/jamie-mttk/vueWrapperDemo) which is a demo to show how to use vuewrapper [Not available yet]
+* [Demo project](https://github.com/jamie-mttk/mttk-vue-wrap-demo) which is a demo to show how to use vuewrapper
 
 We recommend to preview the project first and then read the [Developer Manual](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL.md)
 
 ## Project preview
 
-A live preview of the demo project is available [here](https://mttk.netlify.app/) [Not available yet]
+A live preview of the demo project is available [here](https://mttk.netlify.app/) 
 
 
 ## Demo project Setup

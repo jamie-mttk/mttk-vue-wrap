@@ -11,13 +11,13 @@
 
 * [核心项目](https://github.com/jamie-mttk/mttk-vue-wrap) 实现了完整功能 
 
-* [演示项目](https://github.com/jamie-mttk/vueWrapperDemo) 是一个演示，展示如何使用vuewrapper [暂不可用] 
+* [演示项目](https://github.com/jamie-mttk/mttk-vue-wrap-demo) 是一个演示，展示如何使用vuewrapper
   
 我们建议先预览项目，然后阅读[开发者手册](https://github.com/jamie-mttk/mttk-vue-wrap/blob/master/MANUAL.md) 
 
 ## 项目预览  
 
-演示项目的实时预览可在[此处](https://mttk.netlify.app/)查看 [基于以前版本制作] 
+演示项目的实时预览可在[此处](https://mttk.netlify.app/)查看 
 
 ## 演示项目设置  
 
