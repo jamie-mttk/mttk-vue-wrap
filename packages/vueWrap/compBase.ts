@@ -31,7 +31,7 @@ export function useCompBase(props, context) {
   });
   // console.log("EVAL", JSON.stringify(configStd.value));
   //modelValue
-  const { hasModelValue, modelValue, modelValueName } =
+  const {   tryApplyModelValue } =
     buildModelValue(configStd);
   //
   const { setComponentInstance, getRef } = buildInstance(configStd);
@@ -62,14 +62,8 @@ export function useCompBase(props, context) {
       ...eventsReal.value,
     };
 
-    //Add modelValue if modelValue is configured
-    if (hasModelValue.value) {
-      //model value
-      (all[modelValueName.value] = modelValue.value),
-        (all["onUpdate:" + modelValueName.value] = (value) => {
-          modelValue.value = value;
-        });
-    }
+    //
+    tryApplyModelValue(all)
     //
     return all;
   });
@@ -120,7 +114,7 @@ export function useCompBase(props, context) {
     // };
     //Changed by Jamie @2024/01/16
     //Reuse contextBasic so we could get the below attributes from contextBasic after then
-    contextBasic.modelValue = modelValue;
+    //contextBasic.modelValue = modelValue;
     contextBasic.getRef = getRef;
     contextBasic.instanceKey = configStd.value["~instanceKey"];
     contextBasic.configStd = configStd;
@@ -133,5 +127,5 @@ export function useCompBase(props, context) {
   const registerLifeCycles = buildLifeCycle(contextWrap, configStd);
   registerLifeCycles();
   //
-  return { wrapRender, info: { getRef, contextWrap } };
+  return { wrapRender, contextWrap  };
 }

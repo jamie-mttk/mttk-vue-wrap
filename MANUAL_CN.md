@@ -34,11 +34,11 @@ import { MttkWrapComp } from 'mttk-vue-wrap'
 
 ### 通常
 
-我们强烈建议先查看所有演示，然后阅读本手册。
+我们强烈建议先查看所有演示,然后阅读本手册。
 下面的介绍基于[element plus](https://github.com/element-plus)。但是该项目也可以与其他基于 Vue3 的组件库一起使用。
-配置是一个 JavaScript 对象（稍后称为 JSON）。键的第一个字符表示类型，例如基本、props、slots、events 等。
+配置是一个 JavaScript 对象（稍后称为 JSON)。键的第一个字符表示类型,例如基本、props、slots、events 等。
 
-以下是一个示例，将渲染一个 element-plus 的按钮。
+以下是一个示例,将渲染一个 element-plus 的按钮。
 
 ···sh
 {
@@ -59,15 +59,15 @@ import { MttkWrapComp } from 'mttk-vue-wrap'
 键的第一个字符的含义如下
 | 键名     | 描述  |
 |  ----  | ----  |
-|  ~     | 基本，如组件、modelValue 等 |
+|  ~     | 基本,如组件、modelValue 等 |
 | @      | 事件 |
 | #      | 插槽 |
 | ^      | 生命周期 |
-| 其他  | 属性，如果键以字母开头，则视为是属性 |
+| 其他  | 属性,如果键以字母开头,则视为是属性 |
 
 ### 配置计算
 
-配置可以是 JSON 或函数。如果是函数，则参数是下面描述的上下文，并且返回值应该是本章描述的 JSON。
+配置可以是 JSON 或函数。如果是函数,则参数是下面描述的上下文,并且返回值应该是本章描述的 JSON。
 
 ### 上下文Context
 
@@ -75,9 +75,9 @@ import { MttkWrapComp } from 'mttk-vue-wrap'
 上下文包含以下内容。
 | 键名         | 描述  |
 |  ----      | ----         |
-| slotPara   | 如果在插槽下，则为插槽参数 |
+| slotPara   | 如果在插槽下,则为插槽参数 |
 | parent     | 父级上下文 |
-| modelValue | 此组件的 modelValue，如果未设置则返回 undefined |
+| modelValue | 此组件的 modelValue,如果未设置则返回 undefined; 0.2.9版本删除 |
 | getRef     | 参考下面的 getRef 章节 |
 | instanceKey| 此组件的实例键 |
 
@@ -87,33 +87,34 @@ import { MttkWrapComp } from 'mttk-vue-wrap'
 
 | 属性      | 描述  |
 |  ----         | ----  |
-| component     | 基本组件，'~component' 可以简化为 '~' |
+| component     | 基本组件,'~component' 可以简化为 '~' |
 | modelValue    | 参考 v-model  |
 | modelValuePath| 参考 v-model  |
 | modelValueName| 参考 v-model  |
-| if            | 将设置为 v-if，值可以是计算属性或 ref/reactive 变量 |
-| show          | 将设置为 v-show，值可以是计算属性或 ref/reactive 变量 |
+| if            | 将设置为 v-if,值可以是计算属性或 ref/reactive 变量 |
+| show          | 将设置为 v-show,值可以是计算属性或 ref/reactive 变量 |
 | instanceKey   | 参考 instanceKey  |
+| mvs           | 参考 v-model  |
 
 #### component
 
 '~component' 将根据数据类型进行评估为适当的组件。
 | 类型      | 描述  | 示例 |
 |  ----         | ----  |----  |
-| 字符串   | 已注册的组件名称，通过 [app.component](https://vuejs.org/api/application.html#app-component) 注册  | '~component':'ElButton' 或  'el-button'|
+| 字符串   | 已注册的组件名称,通过 [app.component](https://vuejs.org/api/application.html#app-component) 注册  | '~component':'ElButton' 或  'el-button'|
 | Promise  | 通常作为示例导入 | '~component':import('./Tester.vue')|
 | 函数 | 函数组件 | 参考下面的函数组件章节|
-| 组件|首先导入，然后使用|import Tester from './Tester.vue' <br> '~component':Tester|
+| 组件|首先导入,然后使用|import Tester from './Tester.vue' <br> '~component':Tester|
 
-如果未设置，则使用默认值 'div'。
+如果未设置,则使用默认值 'div'。
 
 #### v-model
 
-如果基本组件没有 v-model（例如 e-row/el-col），则不需要设置 modelValue。
-"modelValueName" 用于设置名称，如果没有设置使用默认值 'modelValue'。
+如果基本组件没有 v-model（例如 e-row/el-col),则不需要设置 modelValue。
+"modelValueName" 用于设置名称,如果没有设置使用默认值 'modelValue'。
 有三种设置 v-model 的方法
 
-1. v-model 由变量定义，只需将 modelValue 设置为该变量。支持ref和reactive.
+1. v-model 由变量定义,只需将 modelValue 设置为该变量。支持ref和reactive.
 
 ···sh
     const valueInput = ref("InitValue")
@@ -124,7 +125,7 @@ import { MttkWrapComp } from 'mttk-vue-wrap'
 
 ```sh
 const valueInput = ref("InitValue");
-// 下面的代码相当于 modelValue: valueInput，只是演示如何使用计算属性来设置 modelValue
+// 下面的代码相当于 modelValue: valueInput,只是演示如何使用计算属性来设置 modelValue
 '~modelValue': computed({
     get() {
     return valueInput.value
@@ -135,7 +136,7 @@ const valueInput = ref("InitValue");
 })
 ```
 
-3. modelValue + modelValuePath，典型用例是在表单内设置表单项值。
+3. modelValue + modelValuePath,典型用例是在表单内设置表单项值。
 
 ```sh
 const formValue=reactive({})
@@ -145,12 +146,15 @@ const formValue=reactive({})
 '~modelValuePath':'address'
 ```
 
-请注意，在上面的示例中，类似 ***modelValue: formValue.address*** 这样的配置是无效的。
+请注意,在上面的示例中,类似 ***modelValue: formValue.address*** 这样的配置是无效的。
+
+4. 从0.2.9版本年开始增加了~mvs (ModelValues的缩写)支持多个v-model
+   ~mvs的值必须是个数组,数组元素为对象，包括 ~modelValueName(必须),~modelValuePath(可选),~modelValueName(可选)
 
 #### instanceKey
 
-如果未设置值，引擎将自动创建唯一键。
-"instanceKey" 用作 getRef 函数的参数，参考下面的 getRef 段落。
+如果未设置值,引擎将自动创建唯一键。
+"instanceKey" 用作 getRef 函数的参数,参考下面的 getRef 段落。
 instanceKey 可以是字符串或 Symbol
 
 ### props
@@ -167,7 +171,7 @@ disabled: false,
 size: inputSize,
 ```
 
-要动态更改 props 值，可以将 prop 值设置为 ref/computed 或 reactive。参考上面示例中的 size prop。如果 inputSize 的值发生更改，组件大小也会相应更改。
+要动态更改 props 值,可以将 prop 值设置为 ref/computed 或 reactive。参考上面示例中的 size prop。如果 inputSize 的值发生更改,组件大小也会相应更改。
 
 ### 插槽
 
@@ -190,11 +194,11 @@ size: inputSize,
 
 |类型         | 描述  |
 |  ----       | ----  |
-| undefined | 生成空内容，通常用于显示插槽备用内容|
-| 函数 | 使用参数 slotPara 和 context 进行评估，返回值将再次用此表解释|
-| 字符串   | 如果以 '#' 开头，则视为插槽继承（稍后解释）；否则渲染为 HTML|
+| undefined | 生成空内容,通常用于显示插槽备用内容|
+| 函数 | 使用参数 slotPara 和 context 进行评估,返回值将再次用此表解释|
+| 字符串   | 如果以 '#' 开头,则视为插槽继承（稍后解释)；否则渲染为 HTML|
 | vNode    | 直接渲染 |
-| 对象   | 视为 Mttk Vue Wrap 配置，使用 MttkVueWrap 渲染|
+| 对象   | 视为 Mttk Vue Wrap 配置,使用 MttkVueWrap 渲染|
 | 其他    | 无意义 |
 
 #### 插槽继承
@@ -205,13 +209,13 @@ size: inputSize,
 <slot name="header"></slot>
 ···
 
-与以上代码相同，下面的代码定义了一个名为 header 的插槽在默认插槽下。
+与以上代码相同,下面的代码定义了一个名为 header 的插槽在默认插槽下。
 
 ···sh
 '#default':'#header'
 ···
 
-插槽将链接到的位置非常有趣。通常，引擎将自动查找，直到找到函数组件或配置根。
+插槽将链接到的位置非常有趣。通常,引擎将自动查找,直到找到函数组件或配置根。
 
 ### 事件
 
@@ -237,8 +241,8 @@ size: inputSize,
 |属性         | 描述  |
 |  ----       | ----  |
 |type| 'inherit' 或 'function'|
-|paraMode| 参数设置模式。如果类型是 inherit，则默认值为 raw；如果类型是 function，则默认值为 contextFirst|
-|value|如果类型是 inherit，则为要发出的事件名称；如果类型是 function，则应为函数|
+|paraMode| 参数设置模式。如果类型是 inherit,则默认值为 raw；如果类型是 function,则默认值为 contextFirst|
+|value|如果类型是 inherit,则为要发出的事件名称；如果类型是 function,则应为函数|
 
 #### paraMode
 
@@ -246,9 +250,9 @@ size: inputSize,
 |值         | 描述  |
 |  ----       | ----  |
 |raw | 原始事件参数 |
-|contextFirst |  将上下文作为第一个参数添加，后面是事件的原始参数 |
-|contextLast | 将上下文作为最后一个参数添加，前面面是事件的原始参数 |
-|combine | 将上下文/参数组合为一个 JSON 对象，上下文键值为context,参数为args |
+|contextFirst |  将上下文作为第一个参数添加,后面是事件的原始参数 |
+|contextLast | 将上下文作为最后一个参数添加,前面面是事件的原始参数 |
+|combine | 将上下文/参数组合为一个 JSON 对象,上下文键值为context,参数为args |
 
 #### 事件继承
 
@@ -267,7 +271,7 @@ size: inputSize,
 
 ### 样式和类
 
-它们被设置为普通 prop，键为 'style' 和 'class'。唯一的区别是引擎会尝试将值评估为对象或数组。
+它们被设置为普通 prop,键为 'style' 和 'class'。唯一的区别是引擎会尝试将值评估为对象或数组。
 
 ### 生命周期
 
@@ -282,12 +286,12 @@ size: inputSize,
     }
 ```
 
-参考上面的示例，生命周期处理程序是一个函数。
+参考上面的示例,生命周期处理程序是一个函数。
 
 ### getRef
 
 "getRef" 函数返回 Vue 组件实例。这是 MttkVueWrap 提供的一个函数。输入参数是 instanceKey。
-下面是一个示例，其中一些配置被忽略。
+下面是一个示例,其中一些配置被忽略。
 
 ```sh
 {'~': XXX,
@@ -303,7 +307,7 @@ size: inputSize,
 }
 ```
 
-因此，您可以使用以下代码来获取组件 XXX、YYY、ZZZ 的元素引用。请注意，返回值不是 ref，因此不需要在调用方法后添加 ".value"。
+因此,您可以使用以下代码来获取组件 XXX、YYY、ZZZ 的元素引用。请注意,返回值不是 ref,因此不需要在调用方法后添加 ".value"。
 
 ```sh
   context.getRef('key1')  // 返回 XXX 的引用
@@ -311,13 +315,13 @@ size: inputSize,
   context.getRef('key3')  // 返回 ZZZ 的引用
 ```
 
-getRef 的参数是可选的，如果未提供，则使用当前组件的 instanceKey
+getRef 的参数是可选的,如果未提供,则使用当前组件的 instanceKey
 
 ## 函数组件
 
 ### 简介
 
-函数组件的目标是将组件封装到一个函数中，该函数可以直接由 Mttk Vue Wrap 渲染。换句话说，它可以替代 .vue 文件。
+函数组件的目标是将组件封装到一个函数中,该函数可以直接由 Mttk Vue Wrap 渲染。换句话说,它可以替代 .vue 文件。
 
 ### 函数参数
 
@@ -328,12 +332,12 @@ getRef 的参数是可选的，如果未提供，则使用当前组件的 instan
 
 ### 返回值
 
-返回值是一个 JSON，第一个属性是 config，是一个标准组件配置；第二个是通过属性methods返回一组方法（可选），返回可以通过此函数组件上的 getRef 调用的方法
+返回值是一个 JSON,第一个属性是 config,是一个标准组件配置；第二个是通过属性methods返回一组方法（可选),返回可以通过此函数组件上的 getRef 调用的方法
 
 ### 示例
 
-这里定义了一个简单的按钮函数组件。外部的 'div' 没有意义，仅用于演示。
-还定义了两个名为 m1 和 m2 的方法。请注意，方法可以与 context 交互。
+这里定义了一个简单的按钮函数组件。外部的 'div' 没有意义,仅用于演示。
+还定义了两个名为 m1 和 m2 的方法。请注意,方法可以与 context 交互。
 
 ···sh
 function buttonComp(c, context) {

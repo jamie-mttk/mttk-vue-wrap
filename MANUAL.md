@@ -77,7 +77,7 @@ The context has the follow contents.
 |  ----      | ----         |
 | slotPara   | If it is under a slot, this is the slot parameter(s) |
 | parent     | The parent context |
-| modelValue | The modelValue of this component, undefined is returned if not set|
+| modelValue | The modelValue of this component, undefined is returned if not set；Removed from 0.2.9|
 | getRef     | Refer to the getRef chapter below|
 | instanceKey| Instance key of this component|
 
@@ -94,7 +94,7 @@ Basic configuration key is started with '~'
 | if            | It will set to v-if, the value can be a computed or ref/reactive variable|
 | show          | It will set to v-show, the value can be a computed or ref/reactive variable|
 | instanceKey   | Refer to instanceKey  |
-
+| mvs           | Refer to v-model  |
 #### component
 
 '~component' will evaluated to the proper component by data type.
@@ -146,6 +146,9 @@ const formValue=reactive({})
 ```
 
 Please note in the above example, config like ***modelValue: formValue.address*** does NOT work.
+
+4. From 0.2.9 ~mvs (Abbreviation of ModelValues) is added to support multiple v-model
+   The value of ~mvs must be an array, each item is a object which include ~modelValueName(Mandatory),~modelValuePath(Optional),~modelValueName(Optional)
 
 #### instanceKey
 

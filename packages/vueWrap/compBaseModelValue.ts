@@ -1,48 +1,76 @@
 import { computed, isRef, unref } from "vue";
 import { getByPath, setByPath } from "./pathUtil";
 
-export function buildModelValue(configStd) {
+export function buildModelValue(configStd:any) {
+  //Add modelValue if modelValue is configured
+  function tryApplyModelValue(all: any) {
+
+
+    if ( !configStd ||unref(configStd) == undefined){
+      return
+     }
+
+    //获取configStd可能的配置
+   tryApplyModelValueInternal(all,configStd)
+   //Check whether there is ~mvs
+   const mvs=unref(unref(configStd)['~mvs'])
+   
+   if(!mvs||!Array.isArray(mvs)||mvs.length==0){
+    return
+   }
+   
+   //
+   for(const c of mvs){
+    
+    tryApplyModelValueInternal(all,c)
+   }
+  }
+ 
+
+  //
+  return {tryApplyModelValue };
+}
+
+
+ //
+ function tryApplyModelValueInternal(all: any, configSingle: any) {
+  
   //whether modelValue is configured.If not, do not build modelValue otherwise it may have unexpected result
-  const hasModelValue = computed(() => {
-    return  (configStd && configStd.value != undefined && configStd.value.hasOwnProperty("~modelValue")) 
-  });
+  if (
+    !configSingle ||
+   unref(configSingle) == undefined ||
+      ! (unref(configSingle).hasOwnProperty("~modelValue"))
+  ) {
+    return;
+  }
+  
   //modelValue
   const modelValue = computed({
     get() {
-      //
-      if (!hasModelValue.value) {
-        return undefined;
-      }
-      let modelValuePath = configStd.value["~modelValuePath"];
+      let modelValuePath = unref(configSingle)["~modelValuePath"];
       if (modelValuePath) {
-        return getByPath(unref(configStd.value["~modelValue"]), modelValuePath);
+        return getByPath(
+          unref(unref(configSingle)["~modelValue"]),
+          modelValuePath
+        );
       } else {
-        return unref(configStd.value["~modelValue"]);
+        return unref(unref(configSingle)["~modelValue"]);
       }
     },
     set(valueNew) {
       //
-      if (!hasModelValue.value) {
-        return;
-      }
-      //
-      // if (!configStd.value.hasOwnProperty("~modelValue")) {
-      //   //do nothing
-      //   return;
-      // }
-      //
-      let modelValuePath = configStd.value["~modelValuePath"];
+      let modelValuePath = unref(configSingle)["~modelValuePath"];
       if (modelValuePath) {
         setByPath(
-          unref(configStd.value["~modelValue"]),
+          unref(unref(configSingle)["~modelValue"]),
           modelValuePath,
           valueNew
         );
       } else {
-        if (isRef(configStd.value["~modelValue"])) {
-          configStd.value["~modelValue"].value = valueNew;
+        if (isRef(unref(configSingle)["~modelValue"])) {
+          unref(configSingle)["~modelValue"].value = valueNew;
         } else {
-          configStd.value["~modelValue"] = valueNew;
+          unref(configSingle)["~modelValue"] = valueNew;
         }
       }
     },
@@ -50,8 +78,14 @@ export function buildModelValue(configStd) {
   //modelValueName
   const modelValueName = computed(() => {
     //
-    return configStd.value["~modelValueName"] || "modelValue";
+    return unref(configSingle)["~modelValueName"] || "modelValue";
   });
+  //Add model value related properties
+  all[modelValueName.value] = modelValue.value,
+  all["onUpdate:" + modelValueName.value] = (value: any) => {
+    modelValue.value = value;
+  }
   //
-  return {hasModelValue, modelValue, modelValueName };
+  return modelValue
+  
 }

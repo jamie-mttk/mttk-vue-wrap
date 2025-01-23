@@ -40,17 +40,16 @@ export default defineComponent({
         //  console.log('2222',context)
 
 
-        const {wrapRender,info} = useCompBase(props, context)
+        const {wrapRender,contextWrap} = useCompBase(props, context)
         //
         // regiesterLifeCycles()
         // Expose public function 
         //getRef: return the component instance
-        context.expose(info);
+        context.expose(contextWrap);
         //
-        context.emit('init',info)
+        provide('contextWrap',contextWrap)
         //
-        // console.log('inject....',inject('contextWrap'))
-        provide('contextWrap',info.contextWrap)
+        context.emit('initWrap',contextWrap)
         //
         return () => wrapRender()
     },
