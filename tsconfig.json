@@ -1,11 +1,22 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "packages/**/*", "packages/**/*.vue", "packages/**/*.ts"],
+  "include": ["env.d.ts", "packages/**/*", "packages/**/*.vue", "packages/**/*.ts", "packages/**/*.d.ts"],
   "compilerOptions": {
+    "target": "es6",
+    "verbatimModuleSyntax": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./packages/vueWrapp/*"],
-    }
+      "@/*": ["./packages/vueWrap/*"]
+    },
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "allowImportingTsExtensions":true,
+    "types": ["vue"]
   },
 
   "references": [

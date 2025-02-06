@@ -1,7 +1,9 @@
 import { computed, isRef, unref } from "vue";
 import { getByPath, setByPath } from "./pathUtil";
 
-export function buildModelValue(configStd:any) {
+import {WrapConfigType}   from './types.ts'
+
+export function buildModelValue(configStd:WrapConfigType) {
   //Add modelValue if modelValue is configured
   function tryApplyModelValue(all: any) {
 

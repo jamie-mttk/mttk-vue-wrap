@@ -1,8 +1,9 @@
 import { isRef, isReactive, toRaw, inject } from "vue";
 
+import {WrapConfigType,ContextWrapType}   from './types.ts'
 //Conver to standard format if the config is flat format
 //Add missing fields: so far only instanceKey is added
-export  function standardizedConfig(contextWrap, config) {
+export  function standardizedConfig(contextWrap:ContextWrapType, config:WrapConfigType) {
   //eval if config is a funciton
   if (typeof config == "function") {
     config = config(contextWrap);
@@ -19,8 +20,7 @@ export  function standardizedConfig(contextWrap, config) {
   //if there is no instanceKey,add a unique one
   const instanceKey = config["~instanceKey"];
   if (!instanceKey) {
-    //Create a unique one if there is no instance key
-  
+    //Create a unique one if there is no instance key  
     config["~instanceKey"] = genUniqueStr();
   }
   //This is a tricky, if it is first level component,set all attrs into config
@@ -66,7 +66,7 @@ export  function standardizedConfig(contextWrap, config) {
 }
 
 //Generate a unique string as component key
-export function genUniqueStr() {
+export function genUniqueStr():string {
   let time = Date.now().toString(36);
   let random = Math.random().toString(36);
   random = random.substring(2, random.length);
@@ -94,7 +94,7 @@ export function isPromise(value: any) {
 //Find the parent context untill
 //1)find one funiton component from provide/inject
 //2)Find root component
-export function findProperContext(contextWrap) {
+export function findProperContext(contextWrap:ContextWrapType) {
   const contextLast = inject("contextOfLastFuncComp", undefined);
   if (contextLast) {
     return contextLast;
@@ -103,7 +103,7 @@ export function findProperContext(contextWrap) {
   return findContexWrappertRoot(contextWrap);
 }
 
-function findContexWrappertRoot(contextWrap) {
+function findContexWrappertRoot(contextWrap:ContextWrapType) {
   let contextThis = contextWrap;
   //
   //  let count=1;

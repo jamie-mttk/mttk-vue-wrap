@@ -1,27 +1,15 @@
-import { computed, unref, toRaw, vShow, withDirectives, h } from "vue";
-import { computedAsync } from "@vueuse/core";
-import { standardizedConfig, genUniqueStr } from "./compBaseUtil";
-import { buildModelValue } from "./compBaseModelValue";
-import { buildMisc } from "./compBaseMisc";
-import { buildInstance } from "./compBaseInstance";
-import { buildProps } from "./compBaseProp";
-import { buildEvents } from "./compBaseEvent";
-import { buildSlots } from "./compBaseSlot";
-import { buildLifeCycle } from "./compBaseLifecycle";
+import { computed, unref, toRaw, vShow, withDirectives, h,SetupContext } from "vue";
+import { standardizedConfig, genUniqueStr } from "./compBaseUtil.ts";
+import { buildModelValue } from "./compBaseModelValue.ts";
+import { buildMisc } from "./compBaseMisc.ts";
+import { buildInstance } from "./compBaseInstance.ts";
+import { buildProps } from "./compBaseProp.ts";
+import { buildEvents } from "./compBaseEvent.ts";
+import { buildSlots } from "./compBaseSlot.ts";
+import { buildLifeCycle } from "./compBaseLifecycle.ts";
+import {WrapPropsType,ContextWrapType}   from './types.ts'
 
-// export interface contextWrapType{
-//   parent: contextWrapType|undefined,
-//   slotPara: object,
-//   getRef:(instanceKey:string)=>any,
-//   instanceKey: string|Symbol,
-//   //Internal use only
-//   props:object，
-//   context:any,
-//   modelValue:any,
-//   configStd:object,
-//   }
-
-export function useCompBase(props, context) {
+export function useCompBase(props:WrapPropsType, context:SetupContext) {
   //Here we have the standard config
   //Since some attributes of contextWrap is unavailable, so here call buildContextBasic
   //change to computed at 2023/12/18,otherwise the change to props.config will not take affect
@@ -93,18 +81,19 @@ export function useCompBase(props, context) {
   }
 
   //To avoid  JS Hoisting since modelValue is unavailable during this call
-  function buildContextBasic() {
+  function buildContextBasic():ContextWrapType {
     return {
       props: toRaw(unref(props)), //Internal use only
       context: context, //Internal use only
       parent: props.contextParent,
       slotPara: props.slotPara,
+      instanceKey:''
     };
   }
   //Because of the JS Hoisting, parseConfig can not access contextWrap directly
   //Error:  can't access lexical declaration 'contextWrap' before initialization
   //This is the contextWrap of THIS CompWrap component
-  function buildContext(contextBasic) {
+  function buildContext(contextBasic:ContextWrapType):ContextWrapType {
     // return {
     //   ...contextBasic,
     //   modelValue,

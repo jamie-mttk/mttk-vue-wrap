@@ -1,4 +1,4 @@
-import { computed ,withModifiers} from "vue";
+import { computed, withModifiers } from "vue";
 import { findProperContext } from "./compBaseUtil";
 
 export function buildEvents(contextWrap, configStd: any) {
@@ -30,9 +30,9 @@ export function buildEvents(contextWrap, configStd: any) {
       }
       //
       if(modifiers && modifiers.length>0){
-        result[eventKey]=withModifiers(eventHandler,modifiers)
+        result[eventKey as string] = withModifiers(eventHandler, modifiers)
       }else{
-        result[eventKey]=eventHandler
+        result[eventKey as string] = eventHandler
       }
       
     }
@@ -72,7 +72,7 @@ function formatEmitKeyAndModifiers(key: String) {
     return letter.toUpperCase();
   });
   //
-  const modifiers=[] as String[]
+  const modifiers=[] 
   if(modifierPart){
     const modifiersRaw=modifierPart.split('.')
     for(const m of modifiersRaw){

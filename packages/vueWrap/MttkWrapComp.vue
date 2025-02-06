@@ -1,23 +1,22 @@
 <script lang="ts">
-import {defineComponent,provide,inject} from 'vue'
+import {defineComponent,provide,SetupContext} from 'vue'
 import { useCompBase } from './compBase'
+import {WrapPropsType,WrapConfigType,SlotParaType,ContextWrapType} from './types'
+
+
+//
 export default defineComponent({
     //Set to false to avoid events set on MttkWrapComp to be automatically apply to config root component
     inheritAttrs: true,
-    emits: ['init'],
+    emits: ['initWrap'],
     props: {
         //Standard config 
-        // config: {
-        //     type: Object,
-        //     required: true,
-        //     default() {
-        //         return {}
-        //     }
-        // },
-        config:[Object, Function],
+        config:{
+            type:Object as () => WrapConfigType
+        },
         //To build the component hierachy
         contextParent: {
-            type: Object,
+            type: Object  as () => ContextWrapType,
             required: false,
             default() {
                //If not provided, try to inject from parent's provide
@@ -27,18 +26,16 @@ export default defineComponent({
         },
         //The slot para if it is under a slot;undefined if it is a root component
         slotPara: {
-            type: Object,
+            type: Object as () => SlotParaType,
             required: false,
             default() {
                 return undefined
             }
         },
     },
-    setup(props, context) { 
+    setup(props:WrapPropsType, context:SetupContext) { 
         //
-        // console.log('1111', context.attrs)
-        //  console.log('2222',context)
-
+  
 
         const {wrapRender,contextWrap} = useCompBase(props, context)
         //

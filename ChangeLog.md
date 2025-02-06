@@ -8,7 +8,10 @@
 
 * Fix bug: if config is a ref or reactive, change config does not take affect
 
-## Version 0.2.9  @ 2023/12/08
+## Version 0.2.9  @ 2024/12/08
 
 * Add ~mvs to support multiple v-model
-* 
+  
+# Version 0.3.0  @ 2025/02/06
+
+* SUpport TypeScript

@@ -1,10 +1,13 @@
-import { ref, createVNode, render} from 'vue'
+import { createVNode, render} from 'vue'
 import type { AppContext } from 'vue'
 import MttkWrapComp  from './MttkWrapComp.vue'
+import {WrapConfigType,DynamicRenderOptionType} from   './types'
+
+//config: 
 //options
 //appendTo: where to append,null will append to root(document.body),it can be a string or html element
 //removeEvent: if provide, this event will automatically trigger remove handler to remove appended div
-export default function dynamicRender(config:any, appContext: AppContext, options = {appendTo:undefined,removeEvent:undefined}) {
+export default function dynamicRender(config:WrapConfigType, appContext: AppContext, options :DynamicRenderOptionType) {
   const mountNode = document.createElement('div')
   const appendTo = getAppendToElement()
   const remove = function () {

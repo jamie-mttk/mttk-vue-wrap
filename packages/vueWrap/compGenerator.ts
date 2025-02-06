@@ -18,7 +18,7 @@ export function compGenerator(
       contextWrapper.context=context
       //
       provide('contextOfLastFuncComp',contextWrapper)
-      //
+    // @ts-ignore
       const c = props.config || {};
       //
       const result = callback(c, contextWrapper);
@@ -116,6 +116,7 @@ export function compGenerator(
             config: config,
             // contextParent: props.contextParent,
             contextParent: contextWrapper,
+            // @ts-ignore
             slotPara: props.slotPara,
           }
           //,slotsReal
