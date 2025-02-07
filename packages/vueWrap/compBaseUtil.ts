@@ -1,6 +1,7 @@
 import { isRef, isReactive, toRaw, inject } from "vue";
-
+import MttkWrapHtml from './MttkWrapHtml.vue'
 import {WrapConfigType,ContextWrapType}   from './types.ts'
+import {contextOfLastFuncComp} from './symbol.ts'
 //Conver to standard format if the config is flat format
 //Add missing fields: so far only instanceKey is added
 export  function standardizedConfig(contextWrap:ContextWrapType, config:WrapConfigType) {
@@ -9,6 +10,11 @@ export  function standardizedConfig(contextWrap:ContextWrapType, config:WrapConf
     config = config(contextWrap);
   // }else if (isPromise(config)){
   //   config=await config(contextWrap)
+  }else  if (typeof config == "string"){
+    config={
+      '~':MttkWrapHtml,
+      html:config
+    } 
   }
   //
   //get raw config,consider ref or reactive
@@ -92,10 +98,10 @@ export function isPromise(value: any) {
 
 //Find proper context
 //Find the parent context untill
-//1)find one funiton component from provide/inject
+//1)find one function component from provide/inject
 //2)Find root component
 export function findProperContext(contextWrap:ContextWrapType) {
-  const contextLast = inject("contextOfLastFuncComp", undefined);
+  const contextLast = inject(contextOfLastFuncComp, undefined);
   if (contextLast) {
     return contextLast;
   }

@@ -1,5 +1,13 @@
-import { computed, unref, toRaw, vShow, withDirectives, h,SetupContext } from "vue";
-import { standardizedConfig, genUniqueStr } from "./compBaseUtil.ts";
+import {
+  computed,
+  unref,
+  toRaw,
+  vShow,
+  withDirectives,
+  h,
+  SetupContext,
+} from "vue";
+import { standardizedConfig, getRawValue } from "./compBaseUtil.ts";
 import { buildModelValue } from "./compBaseModelValue.ts";
 import { buildMisc } from "./compBaseMisc.ts";
 import { buildInstance } from "./compBaseInstance.ts";
@@ -7,20 +15,19 @@ import { buildProps } from "./compBaseProp.ts";
 import { buildEvents } from "./compBaseEvent.ts";
 import { buildSlots } from "./compBaseSlot.ts";
 import { buildLifeCycle } from "./compBaseLifecycle.ts";
-import {WrapPropsType,ContextWrapType}   from './types.ts'
+import { WrapPropsType, ContextWrapType } from "./types.ts";
 
-export function useCompBase(props:WrapPropsType, context:SetupContext) {
+export function useCompBase(props: WrapPropsType, context: SetupContext) {
   //Here we have the standard config
   //Since some attributes of contextWrap is unavailable, so here call buildContextBasic
   //change to computed at 2023/12/18,otherwise the change to props.config will not take affect
   const contextBasic = buildContextBasic();
-  const configStd = computed( () => {
+  const configStd = computed(() => {
     return standardizedConfig(contextBasic, props.config);
   });
   // console.log("EVAL", JSON.stringify(configStd.value));
   //modelValue
-  const {   tryApplyModelValue } =
-    buildModelValue(configStd);
+  const { tryApplyModelValue } = buildModelValue(configStd);
   //
   const { setComponentInstance, getRef } = buildInstance(configStd);
   //contextWrap of this component
@@ -51,7 +58,7 @@ export function useCompBase(props:WrapPropsType, context:SetupContext) {
     };
 
     //
-    tryApplyModelValue(all)
+    tryApplyModelValue(all);
     //
     return all;
   });
@@ -81,19 +88,19 @@ export function useCompBase(props:WrapPropsType, context:SetupContext) {
   }
 
   //To avoid  JS Hoisting since modelValue is unavailable during this call
-  function buildContextBasic():ContextWrapType {
+  function buildContextBasic(): ContextWrapType {
     return {
-      props: toRaw(unref(props)), //Internal use only
+      props: getRawValue(props), //Internal use only
       context: context, //Internal use only
       parent: props.contextParent,
       slotPara: props.slotPara,
-      instanceKey:''
+      instanceKey: "",
     };
   }
   //Because of the JS Hoisting, parseConfig can not access contextWrap directly
   //Error:  can't access lexical declaration 'contextWrap' before initialization
   //This is the contextWrap of THIS CompWrap component
-  function buildContext(contextBasic:ContextWrapType):ContextWrapType {
+  function buildContext(contextBasic: ContextWrapType): ContextWrapType {
     // return {
     //   ...contextBasic,
     //   modelValue,
@@ -116,5 +123,5 @@ export function useCompBase(props:WrapPropsType, context:SetupContext) {
   const registerLifeCycles = buildLifeCycle(contextWrap, configStd);
   registerLifeCycles();
   //
-  return { wrapRender, contextWrap  };
+  return { wrapRender, contextWrap };
 }

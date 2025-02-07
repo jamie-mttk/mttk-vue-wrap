@@ -17,7 +17,7 @@ export type ContextWrapType={
     getRef?:(instanceKey:string)=> HTMLInputElement | null,
     instanceKey: string|Symbol,
     //Internal use only
-    props?:object,
+    props?:WrapPropsType,
     context?:SetupContext,
     // modelValue:any,
     configStd?:object,

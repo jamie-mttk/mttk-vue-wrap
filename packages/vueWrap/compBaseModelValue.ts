@@ -1,17 +1,13 @@
 import { computed, isRef, unref } from "vue";
 import { getByPath, setByPath } from "./pathUtil";
-
 import {WrapConfigType}   from './types.ts'
 
 export function buildModelValue(configStd:WrapConfigType) {
   //Add modelValue if modelValue is configured
   function tryApplyModelValue(all: any) {
-
-
     if ( !configStd ||unref(configStd) == undefined){
       return
      }
-
     //获取configStd可能的配置
    tryApplyModelValueInternal(all,configStd)
    //Check whether there is ~mvs
@@ -19,21 +15,15 @@ export function buildModelValue(configStd:WrapConfigType) {
    
    if(!mvs||!Array.isArray(mvs)||mvs.length==0){
     return
-   }
-   
+   }   
    //
-   for(const c of mvs){
-    
+   for(const c of mvs){    
     tryApplyModelValueInternal(all,c)
    }
   }
- 
-
-  //
+   //
   return {tryApplyModelValue };
 }
-
-
  //
  function tryApplyModelValueInternal(all: any, configSingle: any) {
   

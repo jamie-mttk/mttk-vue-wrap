@@ -1,19 +1,22 @@
-import { provide, inject, reactive } from "vue";
+import { provide, inject } from "vue";
 //
-export function buildInstance(configStd) {
+import {mttkVueWrapInstances} from './symbol.ts'
+//
+export function buildInstance(configStd:Object) {
   //since provide/inject should be called in setup,so save here
   const instances = obtainInstances();
   //
   //Inject(Get from parent component) or provide (Creat a new and provide to children) instances
   //Instances is a map to store component key and component $el
   function obtainInstances() {
-    const instancesExist = inject("mttkVueWrapInstances", undefined);
+    const instancesExist = inject(mttkVueWrapInstances, undefined);
     if (instancesExist != undefined) {
       return instancesExist;
     }
     //
     const instancesNew = {};
-    provide("mttkVueWrapInstances", instancesNew);
+    provide(mttkVueWrapInstances, instancesNew);
+
     //
     return instancesNew;
   }

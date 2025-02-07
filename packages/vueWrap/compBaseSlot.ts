@@ -1,7 +1,7 @@
 import { computed, h, isVNode, isRef } from "vue";
 import MttkWrapHtml from "./MttkWrapHtml.vue";
 import MttkWrapComp from "./MttkWrapComp.vue";
-// import { calSlotsInherit } from "./compGenerator";
+
 import { findProperContext, genUniqueStr } from "./compBaseUtil";
 
 export function buildSlots(contextWrapper, configStd) {

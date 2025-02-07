@@ -12,6 +12,10 @@
 
 * Add ~mvs to support multiple v-model
   
-# Version 0.3.0  @ 2025/02/06
+## Version 0.3.0  @ 2025/02/06
 
 * SUpport TypeScript
+  
+## Version 0.3.1  @ 2025/02/07
+
+* Use Symbol instead of string as provide/inject key

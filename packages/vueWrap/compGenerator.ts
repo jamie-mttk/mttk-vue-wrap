@@ -1,6 +1,6 @@
 import { defineComponent, h ,provide} from "vue";
 import MttkWrapComp from "./MttkWrapComp.vue";
-
+import {contextOfLastFuncComp} from './symbol.ts'
 export function compGenerator(
   contextWrapper,
   callback,
@@ -17,7 +17,7 @@ export function compGenerator(
       //Replace it!
       contextWrapper.context=context
       //
-      provide('contextOfLastFuncComp',contextWrapper)
+      provide(contextOfLastFuncComp,contextWrapper)
     // @ts-ignore
       const c = props.config || {};
       //
