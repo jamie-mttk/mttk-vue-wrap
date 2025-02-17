@@ -9,7 +9,7 @@ export function buildMisc(contextWrap,configStd){
 
   // const isFuncComp = computed(() => typeof component == "function");
   //Parse component
-  //if it is a promise, consider it is imported as "() => import('xxx')", do not use "() => import('xxx')
+  //if it is a promise, consider it is imported as " import('xxx')"
   //if it is a function,consider it as a our function component
   //Otherwise consider it is a component(and try to resolve if it is a string)
   const baseComponent = computed(() => {
